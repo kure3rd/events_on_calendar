@@ -32,3 +32,38 @@ graph TD;
     popCalendarEvent4[calendar_event = calendar_queue.pop]-->deleteCalendarEvent4;
     deleteCalendarEvent4[calendar_event.delete]-->endComparing;
 ```
+
+
+# Class Diagram
+```mermaid
+classDiagram
+
+Event --* Duration
+Duration: datetime.datetime start
+Duration: datetime.datetime end
+Duration: __init__(self, start, end)
+Duration: __eq__(self, other)
+Duration: __lt__(self, other)
+Duration: __gt__(self, other)
+Duration: __str__(self)
+Duration: match_exactly(self, other)
+
+Event --|> ServiceEvent
+ServiceEvent: __init__(self, start, end, summary)
+Event *-- EventQueue
+
+EventQueue --|> ServiceQueue
+ServiceEvent --* ServiceQueue
+ServiceQueue: __init__(self, **kwargs)
+
+Event --|> CalendarEvent
+CalendarEvent: __init__(self, start, end, description)
+EventQueue --|> CalendarQueue
+CalendarQueue: __init__(self, logger, **request_kwargs)
+
+CalendarEvent -- "1" utility_calendar
+CalendarQueue -- "1" utility_calendar
+utility_calendar: googleapi.discovery.Resource service
+utility_calendar: logging.Logger module_logger
+utility_calendar: load_credentials(credential_path, token_path, scopes, logger)
+```
