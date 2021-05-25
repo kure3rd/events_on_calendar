@@ -38,7 +38,7 @@ graph TD;
 ```mermaid
 classDiagram
 
-Event --* Duration
+Duration --* Event
 Duration: datetime.datetime start
 Duration: datetime.datetime end
 Duration: __init__(self, start, end)
@@ -48,12 +48,16 @@ Duration: __gt__(self, other)
 Duration: __str__(self)
 Duration: match_exactly(self, other)
 
+Event: Duration duration
+Event: str name
+Event: __post_init__(self)
+Event: __eq__(self, other)
+
 Event --|> ServiceEvent
 ServiceEvent: __init__(self, start, end, summary)
 Event *-- EventQueue
 
 EventQueue --|> ServiceQueue
-ServiceEvent --* ServiceQueue
 ServiceQueue: __init__(self, **kwargs)
 
 Event --|> CalendarEvent
